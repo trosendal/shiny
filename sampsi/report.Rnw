@@ -1,0 +1,142 @@
+\documentclass{article}
+
+\title{Sample size calculation to assess the prevalence of \Sexpr{input$disease_name} at the herd-level}
+
+
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{color}
+
+\begin{document}
+
+\maketitle
+
+
+To perform a smaple size calculation, we need some references about the number of herds in the population and the expected prevalence of \Sexpr{input$disease_name} at the herd-level. These assumptions are included in table ~\ref{tab:justifications}.
+
+
+<<r define assumptions, echo=FALSE>>=
+
+nfarms<- input$nfarms                       #Total number of swedish pig farms
+p<-input$p                                  #Estimated prevalence
+confidence<-input$confidence                #Confidence threshold
+L<-input$L                                  #Limit of range of posterior estimate
+HSe<-input$HSe                              #Herd Sensitivity
+HSp<-input$HSp                              #Herd Specificity
+Se<-input$Se                                #Test Sensitivity
+Sp<-input$SP                                #Test Specificity
+N_subunit<- input$N_subunit                 #Average number of subunits per farm. This could be pigs or pens. Whatever is the unit of analysis.
+n_subunit_tested <-input$n_subunit_tested   #The number of subunits tested per farm
+p_subunit <- input$p_subunit                #The average within herd prevalence
+
+@
+
+
+\begin{table}[H]
+\begin{tabular}{p{2.25in}p{0.75in}p{2in}}
+\hline
+Variable & Assumption & Justification \\
+\hline
+Number of herds in the population& \Sexpr{nfarms} &  \\
+Among-herd prevalence & \Sexpr{p*100}\% &  \\
+Statistical confidence & \Sexpr{(1-confidence)*100}\% &  \\
+Precision of posterior estimate & \Sexpr{L*100}\% &  \\
+Test Sensitivity & \Sexpr{Se*100}\% &  \\
+Herd Sensitivity & \Sexpr{HSe*100}\% &  \\
+Herd Specificity & \Sexpr{HSp*100}\% &  \\
+Average herd size measured in sampling units & \Sexpr{N_subunit} &  \\
+Number of samples per farm & \Sexpr{n_subunit_tested} &  \\
+Within-herd prevalence & \Sexpr{p_subunit*100}\% &  \\
+
+\hline
+\end{tabular}
+
+\caption{Description of assumptions that were made in the sample size calculations and the justification for these assumptions}
+\label{tab:justifications}
+\end{table}
+
+We can start with a simple calculation of sample size based on the assumption of an infinite population and our expected prevalence
+
+\label{grp1}
+\begin{subequations}\begin{align}
+n=\left [ \frac{Z_{\alpha }}{L} \right ]^{2}\cdot pq \label{grp1_1}
+\end{align}\end{subequations}
+
+<<r Calculate sample size simple, echo=FALSE, warning=FALSE>>=
+
+quant <- 1 - (confidence/2)
+z <- qnorm(quant, mean = 0, sd = 1)
+
+sampsi<-round(((z/L)^2)*(p*(1-p)), digits = 0)
+
+@
+
+Where n is the sample size, $Z_{\alpha}$ is a z-score of \Sexpr{round(z, digits=2)} for \Sexpr{(1-confidence)*100}\% confidence, \textit{p} is the expected prevalence, \textit{q} = 1-\textit{p}, and L is the acceptable error surrounding the point estimate of the prevalence
+
+Assuming that the expected prevalence at the herd level is \Sexpr{p*100}\%, then we can estimate the crude herd level prevalence within \Sexpr{L*100}\% of the true value in \Sexpr{(1-confidence)*100}\% of study replications if we sample \Sexpr{sampsi} herds. 
+
+We can make this more precise by accounting for an imperfect test like this:
+
+\label{grp2}
+\begin{subequations}\begin{align}
+n=\left [ \frac{Z_{\alpha }}{L} \right ]^{2}\cdot \frac{\left [ HSe\cdot p + (1-HSp)\cdot q \right ] \cdot \left [1-HSe\cdot p - (1-HSp)\cdot q \right ]}{(HSe+HSp-1)^2}
+\end{align}\end{subequations}
+
+
+<<r Calculate sample size adjusted, echo=FALSE, warning=FALSE>>=
+
+quant <- 1 - (confidence/2)
+z <- qnorm(quant, mean = 0, sd = 1)
+
+sampsi_adjusted<-round(((z/L)^2)*((HSe*p+(1-HSp)*(1-p))*(1-HSe*p-(1-HSp)*(1-p)))/((HSe+HSp-1)^2), digits = 0)
+
+@
+
+
+
+\label{grp3}
+\begin{subequations}\begin{align}
+HSe_{\substack{finite\\ population}} & = 1-\left ( 1-\frac{n_{within herd} \cdot Se}{N_{within herd}} \right) ^{p_{within herd}\cdot N_{within herd}} \label{grp3_1} \\
+HSe_{\substack{infinite\\ population}} & = 1-\left ( 1 - p_{within herd} \cdot Se)^{n_{within herd}} \right) \label{grp3_2}
+\end{align}\end{subequations}
+
+
+<<r Calculate sample size adjusted2, echo=FALSE, warning=FALSE>>=
+
+quant <- 1 - (confidence/2)
+z <- qnorm(quant, mean = 0, sd = 1)
+
+if (n_subunit_tested/N_subunit>0.1) {
+  HSe_calc <- 1- (1- (n_subunit_tested*Se/N_subunit))^(p_subunit*N_subunit)
+}else{
+  HSe_calc <- 1- (1-p_subunit*Se)^n_subunit_tested
+}
+temp<-((z/L)^2)*((HSe_calc*p+(1-HSp)*(1-p))*(1-HSe_calc*p-(1-HSp)*(1-p)))/((HSe_calc+HSp-1)^2)
+sampsi_adjusted2<-round(temp, digits = 0)
+fraction<-temp/nfarms
+sampsi_adjusted3<-round(temp/(1+(temp-1)/nfarms), digits=0)
+@
+
+If we assume that Se (Test sensitivity) is \Sexpr{Se*100}\% and in each herd we test \Sexpr{n_subunit_tested} units and the average herd has \Sexpr{N_subunit} and that positive herds have a within-herd prevalence of \Sexpr{p_subunit*100}\% then this results in a HSe of \Sexpr{round(HSe_calc * 100,digits=1)}\% and we will need to test \Sexpr{sampsi_adjusted2} in order to be \Sexpr{(1-confidence)*100}\% confident of estimating the true prevalance within \Sexpr{L*100}\% of the true value.
+
+Finally, we can adjust the sample size for a finite population if greater than 10 \% of herds are being sampled as follows:
+
+\label{grp4}
+\begin{subequations}\begin{align}
+n_{\substack{adjusted}} = \frac{n}{1+\frac{n-1}{N}} \label{grp4_1}
+\end{align}\end{subequations}
+
+<<adjustment, echo=FALSE, warning=FALSE>>=
+if (fraction>0.1){
+  text1<-paste(" a finite population and reduce the sampling to ",sampsi_adjusted3, " herds.")
+} else {
+  text1<-paste(" an infinite population and still sample the ", sampsi_adjusted2, " herds.")
+}
+
+@
+
+
+Because \Sexpr{round(fraction*100,digits=1)}\% of the herds are being sampled then we should assume \Sexpr{text1}
+
+
+\end{document}
