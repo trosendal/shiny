@@ -36,3 +36,12 @@ Shiny server setup
 		d
  
 - Next I need to make an init script so it starts on startup and put it behind nginx and run it as a process instead of in the terminal according to a respong from R-studio [here](https://groups.google.com/forum/#!topic/shiny-discuss/9bVI5HO_wfM)
+
+- When you have a new app you can place it in the /var/shiny-server/www directory and then kill the shiny-server process followed by restarting it.
+- The sampsi app is located on the gitlab server. A clone of it is at /home/trosendal/shiny. The app itself is at /home/trosendal/shiny/sampsi.
+- To update the app push the changed to gitlab, sudo pull from gitlab on the server. Then
+
+        sudo cp -rf /home/trosendal/shiny/sampsi /var/shiny-server/www/
+
+- To move just the app to the server
+- Now restart the server
