@@ -54,6 +54,7 @@ shinyServer(function(input, output) {
     downloadHandler(filename = "report.pdf",
                     content = function(file){
                       # generate PDF
+                      library(knitr)
                       knit2pdf("report.Rnw")
                       
                       # copy pdf to 'file'
