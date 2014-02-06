@@ -6,10 +6,18 @@ library(knitr)
 shinyServer(function(input, output) {
    
   output$simple <- renderPrint({
-    sampsi<-epi.simplesize(N = input$nfarms, Vsq = NA, Py = input$p,
-                   epsilon.r = (input$L/input$p), method = "proportion",
-                   conf.level = (1-input$confidence))
-    cat("Given this crude sample size calculation, you will need to sample",sampsi, "herds.")
+    quant <- 1 - (input$confidence/2)
+    z <- qnorm(quant, mean = 0, sd = 1)
+    tmp1<-((z/input$L)^2)*(input$p*(1-input$p))
+    frac1<-tmp1/input$nfarms
+    sampsi<-round(tmp1, digits=0)
+    sampsi_b<-round(tmp1/(1+(tmp1-1)/input$nfarms), digits=0)
+    
+    if (frac1>0.1){
+      cat("Because you are required to sample more than 10% of the population this sample size is adjusted for a finite population. You will need to sample",sampsi_b, "herds to be", (1-input$confidence)*100, "% confident to estimate the prevelence within", 100*input$L, "% of the true prevalence, given the design prevalence of", input$p*100, "%")
+    } else {
+      cat("You will need to sample",sampsi, "herds to be", (1-input$confidence)*100, "% confident to estimate the prevelence within", 100*input$L, "% of the true prevalence, given the design prevalence of", input$p*100, "%")
+    }
   })
   output$adjusted <- renderPrint({
     quant <- 1 - (input$confidence/2)
@@ -24,7 +32,7 @@ shinyServer(function(input, output) {
     sampsi_adjusted_hf<-round(tmpa/(1+(tmpa-1)/input$nfarms), digits=0)
     
     if (frac1>0.1){
-      cat("If the HSe is",input$HSe,"and the HSp is",input$HSp,"You will need to sample",sampsi_adjusted_hf, "herds.")
+      cat("If the HSe is",input$HSe,"and the HSp is",input$HSp,"You will need to sample",sampsi_adjusted_hf, "herds; this is adjusted for a finite population.")
     } else {
       cat("If the HSe is",input$HSe,"and the HSp is",input$HSp,"You will need to sample",sampsi_adjusted, "herds.")
     }
@@ -48,7 +56,7 @@ shinyServer(function(input, output) {
     if (fraction>0.1){
       cat("Assuming a Se of",input$Se,", an average herd size of",input$N_subunit,
           ", and that",input$n_subunit_tested," units were collected per herd, then",sampsi_adjusted3,
-          "herds should be included in the study.")
+          "herds should be included in the study. This estimate was adjusted for a finite population siz")
     } else {
       cat("Assuming a Se of",input$Se,", an average herd size of",input$N_subunit,
           ", and that",input$n_subunit_tested," units were collected per herd, then",sampsi_adjusted2,

@@ -54,9 +54,14 @@ shinyUI(pageWithSidebar(
   
   # Show a plot of the generated distribution
   mainPanel(
-    includeHTML("block1.html"), verbatimTextOutput("simple"),
-    includeHTML("block2.html"), verbatimTextOutput("adjusted"),
-    includeHTML("block3.html"), verbatimTextOutput("testcar"), 
-    downloadButton("downloadPDF", "Download this as a PDF report")
+    tabsetPanel(
+      tabPanel("Method 1", 
+               includeHTML("block1.html"), verbatimTextOutput("simple"),
+               includeHTML("block2.html"), verbatimTextOutput("adjusted"),
+               includeHTML("block3.html"), verbatimTextOutput("testcar"),
+               downloadButton("downloadPDF", "Download this as a PDF report"))
+      
+
+    )
   )
 ))
