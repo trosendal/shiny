@@ -59,9 +59,9 @@ shinyUI(pageWithSidebar(
                includeHTML("block1.html"), verbatimTextOutput("simple"),
                includeHTML("block2.html"), verbatimTextOutput("adjusted"),
                includeHTML("block3.html"), verbatimTextOutput("testcar"),
-               downloadButton("downloadPDF", "Download this as a PDF report"))
-      
-
+               downloadButton("downloadPDF", "Download this as a PDF report")),
+      tabPanel("EpiR package",
+               includeHTML("blockepi1.html"),verbatimTextOutput("epiR_a"))
     )
   )
 ))

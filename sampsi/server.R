@@ -84,5 +84,9 @@ shinyServer(function(input, output) {
                     contentType = "application/pdf"
     )
   
+  output$epiR_a<- renderPrint({
+    test<-input$confidence+25
+    cat("This is a test", test)
+  })
   
 })
