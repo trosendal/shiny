@@ -52,3 +52,10 @@ Shiny server setup
         sudo apt-get install texinfo
 
 - texinfo includes the function texi2dvi and this requires a tex library
+
+* if there are libraries that your apps is using, you need to install them on the server:
+
+    sudo su - \
+    -c "R -e \"install.packages('shiny', repos='http://cran.rstudio.com/')\""
+
+will install the shiny R package. Do the same for other packages. It will not work to run 'R' on the server and install the package theat way.
