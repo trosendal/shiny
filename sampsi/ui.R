@@ -1,6 +1,26 @@
+sourceCode <- list(  # or save this in global.R
+  aceEditor("ui"
+            , value = paste(readLines("ui.R"), collapse="\n")
+            , mode = "r"
+            , theme = "ambience"
+            , height = "400px"
+            , readOnly = TRUE
+  ), br(),
+  aceEditor("server"
+            , value = paste(readLines("server.R"), collapse="\n")
+            , mode = "r"
+            , theme = "ambience"
+            , height = "400px"
+            , readOnly = TRUE
+  )
+)
+
+
+
 library(shiny)
 library(epiR)
 library(knitr)
+library(shinyAce)
 
 # Define UI for application that plots random distributions 
 shinyUI(pageWithSidebar(
@@ -62,6 +82,11 @@ shinyUI(pageWithSidebar(
                downloadButton("downloadPDF", "Download this as a PDF report")),
       tabPanel("EpiR package",
                includeHTML("blockepi1.html"),verbatimTextOutput("epiR_a"))
+    ),
+    checkboxInput("showSourceCode", 'label' = "Show shiny source code?", 'value' = FALSE)
+    , conditionalPanel(
+      condition = "input.showSourceCode == true"
+      , sourceCode
     )
   )
 ))
