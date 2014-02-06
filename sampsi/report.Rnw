@@ -8,6 +8,7 @@
 \usepackage{color}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \maketitle
 

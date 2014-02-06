@@ -15,12 +15,19 @@ shinyServer(function(input, output) {
     quant <- 1 - (input$confidence/2)
     z <- qnorm(quant, mean = 0, sd = 1)
     
-    sampsi_adjusted<-round(((z/input$L)^2)*
-                             ((input$HSe*input$p+(1-input$HSp)*(1-input$p))*
-                                (1-input$HSe*input$p-(1-input$HSp)*(1-input$p)))/
-                             ((input$HSe+input$HSp-1)^2), digits = 0
-                           )
-    cat("If the HSe is",input$HSe,"and the HSp is",input$HSp,"You will need to sample",sampsi_adjusted, "herds.")
+    tmpa<-((z/input$L)^2)*
+          ((input$HSe*input$p+(1-input$HSp)*(1-input$p))*
+          (1-input$HSe*input$p-(1-input$HSp)*(1-input$p)))/
+          ((input$HSe+input$HSp-1)^2)
+    sampsi_adjusted<-round(tmpa, digits = 0)
+    frac1<-tmpa/input$nfarms
+    sampsi_adjusted_hf<-round(tmpa/(1+(tmpa-1)/input$nfarms), digits=0)
+    
+    if (frac1>0.1){
+      cat("If the HSe is",input$HSe,"and the HSp is",input$HSp,"You will need to sample",sampsi_adjusted_hf, "herds.")
+    } else {
+      cat("If the HSe is",input$HSe,"and the HSp is",input$HSp,"You will need to sample",sampsi_adjusted, "herds.")
+    }
   })
   output$testcar <- renderPrint({
     quant <- 1 - (input$confidence/2)
