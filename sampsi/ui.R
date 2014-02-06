@@ -1,3 +1,10 @@
+library(shiny)
+library(epiR)
+library(knitr)
+library(shinyAce)
+
+###Format the source code to display
+
 sourceCode <- list(  # or save this in global.R
   aceEditor("ui"
             , value = paste(readLines("ui.R"), collapse="\n")
@@ -17,18 +24,13 @@ sourceCode <- list(  # or save this in global.R
 
 
 
-library(shiny)
-library(epiR)
-library(knitr)
-library(shinyAce)
-
-# Define UI for application that plots random distributions 
+# Define UI for application 
 shinyUI(pageWithSidebar(
   
   # Application title
   headerPanel("A sample size calculator for among-herd prevalence estimates"),
   
-  # Sidebar with a slider input for number of observations
+  # Sidebar with inputs
   sidebarPanel(
     textInput("disease_name", "Name of the disease:", "Scary Disease-x!"),
     numericInput("nfarms", "Number of farms in the population", 1000),
@@ -72,7 +74,7 @@ shinyUI(pageWithSidebar(
                  value = 0.80)
   ),
   
-  # Show a plot of the generated distribution
+  # Define the main panel, 2 Tabs and a checkbox that appears outside the tabs
   mainPanel(
     tabsetPanel(
       tabPanel("Method 1", 

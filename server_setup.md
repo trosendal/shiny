@@ -55,7 +55,7 @@ Shiny server setup
 
 * if there are libraries that your apps is using, you need to install them on the server:
 
-    sudo su - \
-    -c "R -e \"install.packages('shiny', repos='http://cran.rstudio.com/')\""
+        sudo su - \
+        -c "R -e \"install.packages('shiny', repos='http://cran.rstudio.com/')\""
 
 will install the shiny R package. Do the same for other packages. It will not work to run 'R' on the server and install the package theat way.
