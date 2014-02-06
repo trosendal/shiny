@@ -85,8 +85,10 @@ shinyServer(function(input, output) {
     )
   
   output$epiR_a<- renderPrint({
-    test<-input$confidence+25
-    cat("This is a test", test)
+    sampsi<-epi.simplesize(N = input$nfarms, Vsq = NA, Py = input$p,
+                           epsilon.r = (input$L/input$p), method = "proportion",
+                           conf.level = (1-input$confidence))
+    cat("This calculation is a little different than the first sample size in the 'Method 1' tab. You will need to sample",sampsi, "herds. This sample size is adjusted for a finite population size if the sample size is greater than 10% of the population")
   })
   
 })
