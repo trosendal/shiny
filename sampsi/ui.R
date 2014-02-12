@@ -10,14 +10,14 @@ sourceCode <- list(  # or save this in global.R
             , value = paste(readLines("ui.R"), collapse="\n")
             , mode = "r"
             , theme = "ambience"
-            , height = "400px"
+            , height = "100px"
             , readOnly = TRUE
   ), br(),
   aceEditor("server"
             , value = paste(readLines("server.R"), collapse="\n")
             , mode = "r"
             , theme = "ambience"
-            , height = "400px"
+            , height = "100px"
             , readOnly = TRUE
   )
 )
