@@ -6,11 +6,11 @@ Shiny is an R package available from cran and is open source.
 For more information about how shiny can be used to do analysis behind a website
 look at http://shiny.rstudio.com/ to see an example and to get some guidance on
 writing the code for the application look here http://shiny.rstudio.com/tutorial/. 
-There are also example of application on the we here: http://shiny.rstudio.com/gallery/
+There are also examples of applications on the web here: http://shiny.rstudio.com/gallery/
 
 
-In this project I created are two examples that are inline with the goals of
-the risksurr tools development goals: 
+In this project I created two examples that are inline with the goals of
+the RISKSUR tools development goals: 
 
 1. A true prevalence estimator
 2. A sample size calculator
@@ -27,7 +27,7 @@ from just two files: server.R and ui.R
 
 To run this example set your working directory in R to the 'shiny'
 directory (the folder that contains this file :)) if you are using
-R studio just open the .Rproj file. Then if you don't have the
+R studio just open the .Rproj file. If you don't have the
 dependancies: library(shiny) library(epiR) library(shinyAce)
 you need to install them from cran.
 
@@ -45,13 +45,13 @@ into your address bar:
 
 ## A sample size calculator
 
-This is a slightly fancier example. It uses some test in .html
-files and a sweave file to generate a pdf report for the user. 
+This is a slightly fancier example. It uses some text in .html
+files and a Sweave file to generate a .pdf report for the user. 
 The essential functionality is still in the two files server.R
 and ui.R
 
 To run this example set your working directory in R to the shiny
-directory if you are using R studio just open the .Rproj file. Then if
+directory if you are using R studio just open the .Rproj file. If
 you don't have the dependancies: library(shiny) library(epiR)
 library(knitr) library(shinyAce) you need to install them from cran. To
 produce the pdf report you also need a latex installation.
@@ -75,7 +75,7 @@ Download open source shiny server from here:
 
 http://www.rstudio.com/shiny/server/install-opensource
 
-* I have tried this and succefully deployed the samplesize
+* I have tried this and successfully deployed the samplesize
 calculator example above. This was done on a machine with
 linux Mint, using NGINX as a front end proxy that
 redirects port 80 traffic to the shiny server. To deploy
