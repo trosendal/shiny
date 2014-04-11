@@ -25,9 +25,10 @@ the code that runs the functions is available in an Ace
 editor on the page that can also be hidden. The page runs
 from just two files: server.R and ui.R
 
-To run this example set your working directory in R to the shiny
-directory if you are using R studio just open the .Rproj file. Then if
-you don't have the dependancies: library(shiny) library(epiR) library(shinyAce)
+To run this example set your working directory in R to the 'shiny'
+directory (the folder that contains this file :)) if you are using
+R studio just open the .Rproj file. Then if you don't have the
+dependancies: library(shiny) library(epiR) library(shinyAce)
 you need to install them from cran.
 
 Then run these two lines:
