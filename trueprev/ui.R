@@ -58,6 +58,7 @@ shinyUI(pageWithSidebar(
             )
   )
 ))
+
 ## Copyright (C) 2014  Thomas Rosendal
 ##
 ## This program is free software: you can redistribute it and/or modify
