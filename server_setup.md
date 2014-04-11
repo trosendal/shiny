@@ -46,7 +46,7 @@ Shiny server setup
 - To move just the app to the server
 - Now restart the server
 
-* If you want to run an app on the server you need to have the R libraries installed on the server and any othr software like tex:
+* If you want to run an app on the server you need to have the R libraries installed on the server and any other software like tex:
 
         sudo apt-get install texlive
         sudo apt-get install texinfo
