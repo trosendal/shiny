@@ -1,5 +1,23 @@
 library(shiny)
 library(epiR)
+library(shinyAce)
+
+sourceCode <- list(  # or save this in global.R
+  aceEditor("ui"
+            , value = paste(readLines("ui.R"), collapse="\n")
+            , mode = "r"
+            , theme = "ambience"
+            , height = "100px"
+            , readOnly = TRUE
+  ), br(),
+  aceEditor("server"
+            , value = paste(readLines("server.R"), collapse="\n")
+            , mode = "r"
+            , theme = "ambience"
+            , height = "100px"
+            , readOnly = TRUE
+  )
+)
 
 # Define UI for application 
 shinyUI(pageWithSidebar(
@@ -32,6 +50,11 @@ shinyUI(pageWithSidebar(
   ),
   
   # Define the main panel, 2 Tabs and a checkbox that appears outside the tabs
-  mainPanel(plotOutput("simple")
+  mainPanel(plotOutput("simple"),
+            checkboxInput("showSourceCode", 'label' = "Show shiny source code?", 'value' = TRUE)
+            , conditionalPanel(
+              condition = "input.showSourceCode == true"
+              , sourceCode
+            )
   )
 ))

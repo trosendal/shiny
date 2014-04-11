@@ -85,7 +85,7 @@ shinyUI(pageWithSidebar(
       tabPanel("EpiR package",
                includeHTML("blockepi1.html"),verbatimTextOutput("epiR_a"))
     ),
-    checkboxInput("showSourceCode", 'label' = "Show shiny source code?", 'value' = FALSE)
+    checkboxInput("showSourceCode", 'label' = "Show shiny source code?", 'value' = TRUE)
     , conditionalPanel(
       condition = "input.showSourceCode == true"
       , sourceCode
