@@ -1,3 +1,5 @@
+# Some experience with Shiny Server
+
 Shiny server setup
 
 - installed shiny server and placed example files in:
@@ -22,7 +24,7 @@ Shiny server setup
 		  }
 		}
 
-- Following the description [here](https://github.com/Cambridge-R-User-Group/CambRweb/wiki/Shiny-Server-tutorial), I started the server the issue the following command:
+- Following the description [here](https://github.com/Cambridge-R-User-Group/CambRweb/wiki/Shiny-Server-tutorial), I started the server by issuing the following command:
 
 		screen -d -m su - -c shiny-server
 
@@ -35,7 +37,7 @@ Shiny server setup
 		Ctrl-A
 		d
  
-- Next I need to make an init script so it starts on startup and put it behind nginx and run it as a process instead of in the terminal according to a respong from R-studio [here](https://groups.google.com/forum/#!topic/shiny-discuss/9bVI5HO_wfM)
+- Next I need to make an init script so it starts on startup and put it behind nginx and run it as a process instead of in the terminal according to a response from R-studio [here](https://groups.google.com/forum/#!topic/shiny-discuss/9bVI5HO_wfM)
 
 - When you have a new app you can place it in the /var/shiny-server/www directory and then kill the shiny-server process followed by restarting it.
 - The sampsi app is located on the gitlab server. A clone of it is at /home/trosendal/shiny. The app itself is at /home/trosendal/shiny/sampsi.
